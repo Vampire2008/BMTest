@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  bmtest:
+    image: ${DOCKER_REGISTRY-}bmtest
+    build:
+      context: .
+      dockerfile: BMTest/Dockerfile
+    depends_on:
+      - sql
+    environment:
+      "ASPNETCORE_URLS": "http://+:80"
+      "ConnectionStrings__DefaultConnection": "Data source=sql;User=sa;Password=Pass@word1;Database=BmTasks"
+    ports:
+      - "8080:80"      
+      
+  sql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Pass@word1"
